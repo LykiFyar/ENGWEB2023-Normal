@@ -1,0 +1,56 @@
+Exercício 1.
+1.1 - Setup
+
+Os nomes dos atributos dos documentos do dataset foram alterados para simplificar a escrita e não ter problemas com as acentuações e carateres especiais, um registo tem esta forma:
+
+{
+    "_id": 20615557,
+    "numregisto": 3,
+    "codrua": 1685467,
+    "rua": "Rua Júlio Dinis",
+    "local": "Zambujeiro",
+    "freguesia": "Alcabideche",
+    "especie": "pinheiro manso",
+    "nomecientifico": "Pinus pinea",
+    "origem": "",
+    "dataplantacao": "",
+    "estado": "Adulto",
+    "caldeira": "Sim",
+    "tutor": "Não",
+    "implantacao": "Arruamento",
+    "gestor": "DGEV",
+    "dataupdate": "23/07/2021 19:50:54",
+    "numintervencoes": 6
+  }
+
+O campo "Id" tornou-se no campo "_id"
+
+Comando para importar dados para mongodb: mongoimport -d plantas -c plantas --file .\plantas.json --jsonArray
+
+1.2 - Queries
+
+    1. Quantos registos estão na base de dados;
+    > db.plantas.countDocuments()
+
+    2. Quantos registos de plantação se encontram na freguesia "São Domingos de Rana"?
+    > db.plantas.find({freguesia:"São Domingos de Rana"}).count()
+    
+    3. Qual a lista de freguesias (ordenada alfabeticamente e sem repetições)?
+    > db.plantas.aggregate([{$project:{freguesia:1}},{$group:{_id:"$freguesia"}}]).sort({_id:1})
+    
+    4. Qual a distribuição dos registos por freguesia (quantos registos em cada freguesia)
+    > db.plantas.aggregate([{$project:{freguesia:1}},{$group:{_id:"$freguesia", "count": {$count:{}}}}]).sort({_id:1})
+    
+    5. Qual a distribuição dos registos por espécie?
+    > db.plantas.aggregate([{$project:{"especie":1}},{$group:{_id:"$especie", "count": {$count:{}}}}]).sort({_id:1})
+
+
+Para iniciar a aplicação:
+    - Utilizar o comando "npm i" para instalar as dependências
+    - Utilizar o comando "npm start" para executar o serviço
+
+Exercício 2.
+
+Para iniciar a aplicação:
+    - Utilizar o comando "npm i" para instalar as dependências
+    - Utilizar o comando "npm start" para executar o serviço
